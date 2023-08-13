@@ -22,8 +22,5 @@ public class JavalearningApplication {
     static record Person(String name) {
     }
 }
-  //record Response
-  // (String great, Person person, java.util.List<String> list) {
- //  }
 
 
