@@ -3,6 +3,7 @@ import java.net.http.HttpResponse;
 import java.util.*;
 
 import models.customerAddDto;
+import models.updateCustomerDto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.Query;
@@ -22,10 +23,12 @@ public class JavalearningApplication {
     public static void main(String[] args) {
         SpringApplication.run(JavalearningApplication.class, args);
     }
+
     @GetMapping("/getAll")
     public List<Customer> getAll() {
-        return  customerRepository.findAll();
+        return customerRepository.findAll();
     }
+
     @PostMapping("/add")
     public Object add(@RequestBody customerAddDto dto) {
         Customer customer = new Customer();
@@ -34,10 +37,23 @@ public class JavalearningApplication {
         customer.setName(dto.name());
         return customerRepository.save(customer);
     }
+
     @DeleteMapping("delete/{id}")
-    public  Object deleteById(@PathVariable("id") Integer id) {
-         customerRepository.deleteById(id);
-         return "operation successful";
+    public Object deleteById(@PathVariable("id") Integer id) {
+        customerRepository.deleteById(id);
+        return "operation successful";
+    }
+
+    @PatchMapping("update")
+    public Object updateCustomer(@RequestBody updateCustomerDto dto) {
+        var customer = customerRepository.findById(dto.id());
+        if (customer.isPresent()) {
+            var toBeUpdatedCustomer = customer.get();
+            toBeUpdatedCustomer.setAge(dto.age());
+            toBeUpdatedCustomer.setName(dto.name());
+            return customerRepository.save(toBeUpdatedCustomer);
+        } else return "Not found";
+
     }
 
 }
