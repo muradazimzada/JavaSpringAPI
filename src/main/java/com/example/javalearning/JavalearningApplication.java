@@ -5,6 +5,7 @@ import java.util.*;
 import models.customerAddDto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
@@ -32,6 +33,11 @@ public class JavalearningApplication {
         customer.setEmail(dto.email());
         customer.setName(dto.name());
         return customerRepository.save(customer);
+    }
+    @DeleteMapping("delete/{id}")
+    public  Object deleteById(@PathVariable("id") Integer id) {
+         customerRepository.deleteById(id);
+         return "operation successful";
     }
 
 }
