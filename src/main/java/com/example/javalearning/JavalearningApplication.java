@@ -1,26 +1,39 @@
 package com.example.javalearning;
+import java.net.http.HttpResponse;
+import java.util.*;
 
+import models.customerAddDto;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @RestController
+@RequestMapping("/api/v1/customers")
 public class JavalearningApplication {
+
+    private final CustomerRepository customerRepository;
+
+    public JavalearningApplication(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(JavalearningApplication.class, args);
     }
-    @GetMapping(value = "/")
-    public  String great() { return  "Hello";}
-    @GetMapping(value = "/get")
-    public Object get() {
-        return new Object();  // new Response("Hello",  new Person("Murad"), java.util.List.of("sss"));
+    @GetMapping("/getAll")
+    public List<Customer> getAll() {
+        return  customerRepository.findAll();
+    }
+    @PostMapping("/add")
+    public Object add(@RequestBody customerAddDto dto) {
+        Customer customer = new Customer();
+        customer.setAge(dto.age());
+        customer.setEmail(dto.email());
+        customer.setName(dto.name());
+        return customerRepository.save(customer);
     }
 
-    static record Person(String name) {
-    }
 }
 
 

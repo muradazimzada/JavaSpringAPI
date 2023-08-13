@@ -8,7 +8,8 @@ public class Customer
     @Id
     @SequenceGenerator(
             name = "c_id_gen",
-            sequenceName = "c_id_seq"
+            sequenceName = "c_id_seq",
+            allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
